@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>OpenFaaS Image Resize</title>
+
+</head>
+
+
+
+<body>
+
+
+
+<h1>OpenFaaS Image Resize Demo</h1>
+
+
+
+<input type="file" id="file">
+
+
+
+<button onclick="resizeImage()">
+
+Resize
+
+</button>
+
+
+
+<p id="output"></p>
+
+
+
+<script>
+
+
+
+async function resizeImage() {
+
+
+
+    let file = document.getElementById("file").files[0];
+
+
+
+    if (!file) {
+
+        alert("Select an image");
+
+        return;
+
+    }
+
+
+
+    let data = await file.arrayBuffer();
+
+
+
+    let bytes = new Uint8Array(data);
+
+
+
+    let binary = "";
+
+
+
+    for (let i = 0; i < bytes.length; i++) {
+
+        binary += String.fromCharCode(bytes[i]);
+
+    }
+
+
+
+    let base64 = btoa(binary);
+
+
+
+
+
+    let response = await fetch(
+
+        "/function/image-resize",
+
+        {
+
+            method: "POST",
+
+            body: base64
+
+        }
+
+    );
+
+
+
+
+
+    let result = await response.text();
+
+
+
+    document.getElementById("output").innerHTML = result;
+
+
+
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>
+

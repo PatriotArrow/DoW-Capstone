@@ -1,0 +1,1 @@
+url = "https://jinucloudwaf.space/function/image-resize"
